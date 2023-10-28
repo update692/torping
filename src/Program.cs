@@ -80,7 +80,8 @@ namespace torping
         }
 
         // ===============================================================
-        public static bool success { get; set; }
+        static bool success { get; set; }
+        static readonly string _appname = "torping";
 
         static async Task Main(string[] args)
         {
@@ -96,6 +97,7 @@ namespace torping
                 int inter;
 
                 Console.Write("Request...");
+                Console.Title = $"{_appname} - Request...";
                 await DoMain();
                 if (success)
                 {
@@ -151,6 +153,7 @@ namespace torping
             {
                 CR();
                 Console.WriteLine($"{DateTime.Now} | {"ERROR  "} | {ex.Message} (Probably timeout)");
+                Console.Title = $"{_appname} - {ex.Message} (Probably timeout)";
                 return;
             }
             finally
@@ -164,11 +167,13 @@ namespace torping
                 string content = await result.Content.ReadAsStringAsync();
                 CR();
                 Console.WriteLine($"{DateTime.Now} | {(result.IsSuccessStatusCode ? "SUCCESS" : "ERROR  ")} | {(int)result.StatusCode} {result.ReasonPhrase} | Length: {content.Length} | Time: {stopwatch.Elapsed.Milliseconds}");
+                Console.Title = $"{_appname} - {result.ReasonPhrase}";
             }
             else
             {
                 CR();
                 Console.WriteLine($"{DateTime.Now} | {"ERROR  "} | Unknown");
+                Console.Title = $"{_appname} - Unknown error";
             }
         }
 
